@@ -1,0 +1,15 @@
+---
+- name: Backup Network Device Configuration
+  hosts: switches
+  gather_facts: no
+  tasks:
+    - name: Backup current configuration
+      ios_config:
+        backup: yes
+        save_when: always
+      register: backup_result
+
+    - name: Save backup to file
+      copy:
+        content: "{{ backup_result }}"
+        dest: ../../config_backup/switch_backup.txt

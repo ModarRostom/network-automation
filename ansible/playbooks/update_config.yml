@@ -1,0 +1,15 @@
+---
+- name: Update Network Device Configuration
+  hosts: switches
+  gather_facts: no
+  tasks:
+    - name: Apply configuration from template
+      ios_config:
+        src: templates/switch_config.j2
+        backup: yes
+      register: config_result
+
+    - name: Log configuration result
+      copy:
+        content: "{{ config_result }}"
+        dest: ../../logs/network.log

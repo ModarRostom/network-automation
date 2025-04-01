@@ -1,0 +1,15 @@
+---
+- name: Monitor Network Devices
+  hosts: switches
+  gather_facts: no
+  tasks:
+    - name: Ping the devices
+      ios_ping:
+        dest: 8.8.8.8
+        count: 3
+      register: ping_result
+
+    - name: Save monitoring status
+      copy:
+        content: "{{ ping_result }}"
+        dest: ../../monitoring/status_report.txt
